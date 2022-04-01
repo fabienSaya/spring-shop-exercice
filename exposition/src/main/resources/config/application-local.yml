@@ -2,9 +2,9 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: admin
+    url: jdbc:postgresql://localhost:5432/spring_shop
+    username: userjava
+    password: userjava
 #Monitoring endpoints   
 management:
    endpoints:

@@ -32,4 +32,9 @@ public class ItemRepositoryImpl implements ItemRepository {
     public List<Item> findAll() {
         return itemJpaRepository.findAll();
     }
+
+    @Override
+    public List<Item> findByIds(List<String> itemIds) {
+        return itemJpaRepository.findAllById(itemIds);
+    }
 }

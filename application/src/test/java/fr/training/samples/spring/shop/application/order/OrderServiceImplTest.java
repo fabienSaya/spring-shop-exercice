@@ -88,15 +88,17 @@ public class OrderServiceImplTest {
         when(itemRepositoryMock.findById(itemIds.get(1))).thenReturn(items.get(1));
         when(itemRepositoryMock.findById(itemIds.get(2))).thenReturn(items.get(2));
 
+        // En fait, il ne faut pas mocker la partie "save". Comme c'est un MockBean, il ne va pas faire d'insertion en base
+
         //when
         Order order= orderService.addOrder(customerId,itemIds);
 
         assertThat(order).isNotNull();
         assertThat(order.getTotal()).isEqualTo(6);
+        //permet de vérifier si
         verify(orderRepositoryMock, times(1)).save(any());
         verify(customerRepositoryMock, times(1)).findById(customerId);
-        verify(itemRepositoryMock, times(1)).findById(itemIds.get(0));
-
+        verify(itemRepositoryMock, times(3)).findById(any());
 
     }
 

@@ -32,9 +32,6 @@ public class OrderRepositoryImplTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-
-
-
     @Test
     public void findById_on_existing_order_id_should_succeed() {
         //INSERT INTO ORDERS (ID, CUSTOMER_ID, TOTAL, VERSION) VALUES ('123e4567-189b-42d3-a456-556642440000','123e4567-e89b-42d3-a456-556642440000',30,0);
