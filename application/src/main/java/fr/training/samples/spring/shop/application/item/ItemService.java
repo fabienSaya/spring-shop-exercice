@@ -11,14 +11,22 @@ public interface ItemService {
      * @param item the item to add
      * @return the new added item
      */
-    public Item addItem(Item item);
+    Item addItem(Item item);
 
     /**
      * Display items catalog
      *
      * @return a list of item entities
      */
-    public List<Item> getAllItems();
+    List<Item> getAllItems();
+
+    /**
+     * Retrieve an item by his identifer
+     *
+     * @param id the item identifier
+     * @return the found item
+     */
+    Item getItem(String id);
 
 }
 

@@ -6,6 +6,7 @@ import fr.training.samples.spring.shop.domain.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -35,5 +36,10 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public Customer findByCustomerName(String name) {
         return customerJpaRepository.findByName(name);
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        return customerJpaRepository.findAll();
     }
 }

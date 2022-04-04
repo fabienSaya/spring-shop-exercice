@@ -5,7 +5,8 @@ import fr.training.samples.spring.shop.exposition.common.AbstractMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ItemMapper extends AbstractMapper<ItemDto,Item> {
+public class ItemMapper extends AbstractMapper<Item,ItemDto,ItemLightDto> {
+
     @Override
     public ItemDto mapToDto(final Item entity) {
         return new ItemDto(entity.getId(),entity.getDescription(), entity.getPrice());
@@ -20,10 +21,12 @@ public class ItemMapper extends AbstractMapper<ItemDto,Item> {
         return item;
     }
 
-    public Item mapToEntity(final ItemLightDto dto) {
+    @Override
+    public Item mapLightDtoToEntity(ItemLightDto dto) {
         final Item entity = new Item();
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         return entity;
     }
+
 }

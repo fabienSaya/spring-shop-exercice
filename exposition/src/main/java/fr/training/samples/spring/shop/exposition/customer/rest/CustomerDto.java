@@ -1,5 +1,8 @@
 package fr.training.samples.spring.shop.exposition.customer.rest;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 public class CustomerDto implements Serializable {
@@ -22,6 +25,7 @@ public class CustomerDto implements Serializable {
 	/**
 	 * password of type String
 	 */
+	@JsonIgnore //permet d'ignorer la serialissation du password comme ca il n'est plus visible
 	private String password;
 
 	/**

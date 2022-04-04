@@ -30,4 +30,10 @@ public class ItemServiceImpl implements ItemService{
     public List<Item> getAllItems() {
         return itemRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Item getItem(String id) {
+        return itemRepository.findById(id);
+    }
 }

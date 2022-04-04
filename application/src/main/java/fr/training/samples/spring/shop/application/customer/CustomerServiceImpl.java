@@ -6,6 +6,8 @@ import fr.training.samples.spring.shop.domain.customer.CustomerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CustomerServiceImpl implements CustomerService{
     private final CustomerRepository customerRepository;
@@ -30,5 +32,16 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Customer findOne(String customerId) {
         return customerRepository.findById(customerId);
+    }
+
+    @Transactional
+    @Override
+    public void update(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 }
