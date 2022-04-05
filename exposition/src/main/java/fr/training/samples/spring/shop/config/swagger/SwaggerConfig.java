@@ -25,7 +25,8 @@ public class SwaggerConfig {
     public Docket customImplementation() {
 
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("fr.training.samples.spring.shop.exposition")).build()
+                //.apis(RequestHandlerSelectors.basePackage("fr.training.samples.spring.shop.exposition")).build()
+                .apis(RequestHandlerSelectors.basePackage("fr.training.samples.spring.shop")).build()
                 .directModelSubstitute(LocalDate.class, java.sql.Date.class)//
                 .directModelSubstitute(ZonedDateTime.class, java.util.Date.class) //
                 .apiInfo(apiInfo()) //
