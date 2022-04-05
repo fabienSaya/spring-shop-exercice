@@ -1,10 +1,14 @@
 package fr.training.samples.spring.shop.exposition.order.rest;
 
 import fr.training.samples.spring.shop.domain.order.Order;
+import fr.training.samples.spring.shop.domain.order.OrderItem;
 import fr.training.samples.spring.shop.exposition.common.AbstractMapper;
 import fr.training.samples.spring.shop.exposition.customer.rest.CustomerMapper;
 import fr.training.samples.spring.shop.exposition.item.rest.ItemMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * Mapper for the Order entity and its Dto .
@@ -26,8 +30,14 @@ public class OrderMapper extends AbstractMapper<Order,OrderDto,OrderLightDto> {
         final OrderDto dto = new OrderDto();
         dto.setId(entity.getId());
         dto.setCustomer(customerMapper.mapToDto(entity.getCustomer()));
-        dto.setItems(itemMapper.mapToDtoList(entity.getItems()));
-        dto.setTotal(entity.getTotal());
+
+       // dto.setItems(itemMapper.mapToDtoList(entity.getOrderItems()));
+        final List<OrderItem> orderItems = entity.getOrderItems();
+        if (!CollectionUtils.isEmpty(orderItems)) {
+            for (final OrderItem orderItem : orderItems) {
+                dto.addItem(itemMapper.mapToDto(orderItem.getItem()));
+            }
+        }
         return dto;
     }
 

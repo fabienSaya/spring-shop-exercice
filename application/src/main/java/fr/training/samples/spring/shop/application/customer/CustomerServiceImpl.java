@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -25,17 +25,24 @@ public class CustomerServiceImpl implements CustomerService{
     @Transactional
     @Override
     public Customer create(Customer customer) {
-        Customer customerWithSameName= customerRepository.findByCustomerName(customer.getName());
-        if (customerWithSameName!=null)
+        Customer customerWithSameName = customerRepository.findByCustomerName(customer.getName());
+        if (customerWithSameName != null)
             throw new AlreadyExistingException("A customer with this name already exist");
 
+        //on fait une copie du customer en encodant le password
+        Customer customer1 = Customer.builder()
+                .id(customer.getId())
+                .name(customer.getName())
+                .password(passwordEncoder.encode(customer.getPassword()))
+                .addRole(RoleTypeEnum.ROLE_USER).build();
+
         // Encode given password
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        //customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
         // New customer has user role by default
-        customer.addRole(RoleTypeEnum.ROLE_USER);
+        //customer.addRole(RoleTypeEnum.ROLE_USER);
 
-        customerRepository.save(customer);
+        customerRepository.save(customer1);
         return customer;
 
     }
@@ -51,9 +58,14 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public void update(Customer customer) {
         // Encode given password
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        //customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
-        customerRepository.save(customer);
+        Customer customer1 = Customer.builder()
+                .name(customer.getName())
+                .password(passwordEncoder.encode(customer.getPassword()))
+                .addRole(RoleTypeEnum.ROLE_USER).build();
+
+        customerRepository.save(customer1);
     }
 
     @Override

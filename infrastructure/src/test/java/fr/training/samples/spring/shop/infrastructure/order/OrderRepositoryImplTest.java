@@ -6,6 +6,7 @@ import fr.training.samples.spring.shop.domain.customer.CustomerRepository;
 import fr.training.samples.spring.shop.domain.item.Item;
 import fr.training.samples.spring.shop.domain.item.ItemRepository;
 import fr.training.samples.spring.shop.domain.order.Order;
+import fr.training.samples.spring.shop.domain.order.OrderItem;
 import fr.training.samples.spring.shop.domain.order.OrderRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +49,7 @@ public class OrderRepositoryImplTest {
         assertThat(order).isNotNull();
         assertThat(order.getId()).isEqualTo(orderId);
         assertThat(order.getCustomer().getName()).isEqualTo("NAME1");
-        assertThat(order.getItems()).hasSize(2);
+        assertThat(order.getOrderItems()).hasSize(2);
 
 
     }
@@ -57,25 +58,28 @@ public class OrderRepositoryImplTest {
     public void save_new_order_should_succeed() {
         final String orderId = "newOrder";
 
-        // Given
-        final Order order = new Order();
-        order.setId(orderId);
 
+        // Given
         final Customer customer = customerRepository.findById("123e4567-e89b-42d3-a456-556642440000");
-        order.setCustomer(customer);
         final Item item = itemRepository.findById("123e4567-e89b-42d3-a456-556642440005");
-        order.addItem(item);
+        final OrderItem orderItem = new OrderItem(item);
+
+        final Order order = Order.builder()
+                .id(orderId)
+                .customer(customer)
+                .addOrderItem(orderItem).build();
+
         // When
         orderRepository.save(order);
         // Then
         assertThat(orderRepository.findById(order.getId())).isNotNull();
 
 
-        Order savedOrder= orderRepository.findById(orderId);
+        Order savedOrder = orderRepository.findById(orderId);
         assertThat(savedOrder).isNotNull();
         assertThat(order).isEqualTo(savedOrder);//on a surchargé equals de Item pour que ca marche bien
 
-        assertThat(savedOrder.getItems()).size().isEqualTo(1);
+        assertThat(savedOrder.getOrderItems()).size().isEqualTo(1);
     }
 
     @Test(expected = NotFoundException.class)

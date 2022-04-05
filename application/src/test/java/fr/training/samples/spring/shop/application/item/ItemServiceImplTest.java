@@ -33,9 +33,11 @@ public class ItemServiceImplTest {
     @Test
     public void addItem_should_call_save_repository_1_time() {
         // Given
-        final Item item = new Item();
+        /*final Item item = new Item();
         item.setDescription("Banana");
-        item.setPrice(10);
+        item.setPrice(10);*/
+
+        Item item = Item.builder().description("Banana").price(10).build();
 
         // When
         final Item expected = itemService.addItem(item);
@@ -48,9 +50,12 @@ public class ItemServiceImplTest {
     @Test
     public void findAll_should_return_item_list() {
         // Given
-        final Item item = new Item();
+        /*final Item item = new Item();
         item.setDescription("Banana");
-        item.setPrice(10);
+        item.setPrice(10);*/
+
+        Item item = Item.builder().description("Banana").price(10).build();
+
         final List<Item> items = new ArrayList<>();
         items.add(item);
         when(itemRepositoryMock.findAll()).thenReturn(items);

@@ -24,20 +24,18 @@ public class CustomerMapper extends AbstractMapper<Customer,CustomerDto,Customer
 
     @Override
     public Customer mapToEntity(final CustomerDto dto) {
-        final Customer customer = new Customer();
+       /* final Customer customer = new Customer();
         customer.setName(dto.getName());
         customer.setPassword(dto.getPassword());
-        customer.setId(dto.getCustomerID());
-        return customer;
+        customer.setId(dto.getCustomerID());*/
+
+        return Customer.builder().id(dto.getCustomerID()).name(dto.getName()).password(dto.getPassword()).build();
     }
 
 
     @Override
     public Customer mapLightDtoToEntity(CustomerLightDto dto) {
-        final Customer customer = new Customer();
-        customer.setName(dto.getName());
-        customer.setPassword(dto.getPassword());
-        return customer;
+        return Customer.builder().name(dto.getName()).password(dto.getPassword()).build();
     }
 
 }

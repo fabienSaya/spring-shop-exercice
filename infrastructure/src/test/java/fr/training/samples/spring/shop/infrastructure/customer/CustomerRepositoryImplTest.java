@@ -42,11 +42,13 @@ public class CustomerRepositoryImplTest {
     public void save_new_customer_should_succeed() {
         final String customerID="idfab";
 
-        Customer customer=new Customer();
+        Customer customer = Customer.builder().id(customerID).name("fabien").password("xxxx").build();
+
+        /*Customer customer=new Customer();
         customer.setId(customerID);
         customer.setName("fabien");
         customer.setPassword("xxxx");
-        customer.setVersion(0);
+        customer.setVersion(0);*/
 
         customerRepository.save(customer);
 

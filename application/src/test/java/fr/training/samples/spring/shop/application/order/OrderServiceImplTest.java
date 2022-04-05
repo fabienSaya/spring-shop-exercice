@@ -9,7 +9,9 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import fr.training.samples.spring.shop.domain.order.OrderItem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,35 +42,23 @@ public class OrderServiceImplTest {
     private  ItemRepository itemRepositoryMock;
 
     private Order getNewOrder() {
-        final Order order = new Order();
-        order.setCustomer(getCustomer());
-        for (Item item: getItems()) {
-            order.addItem(item);
-        }
-        return order;
+        final List<OrderItem> orderItems = getItems().stream().map(OrderItem::new)
+                .collect(Collectors.toList());
+        return Order.builder().customer(getCustomer()).orderItems(orderItems).build();
     }
 
     private List<Item> getItems() {
         final List<Item> items = new ArrayList<>();
-        final Item item1 = new Item();
-        item1.setDescription("item 1");
-        item1.setPrice(1);
-        items.add(item1);
-        final Item item2 = new Item();
-        item2.setDescription("item 2");
-        item2.setPrice(2);
-        items.add(item2);
-        final Item item3 = new Item();
-        item3.setDescription("item 3");
-        item3.setPrice(3);
-        items.add(item3);
+        items.add(Item.builder().description("item 1").price(1).build());
+        items.add(Item.builder().description("item 2").price(2).build());
+        items.add(Item.builder().description("item 3").price(3).build());
         return items;
     }
 
     private Customer getCustomer() {
-        final Customer customer = new Customer();
-        customer.setName("Michel Dupont");
-        customer.setPassword("password");
+        final Customer customer = Customer.builder()
+                .name("Michel Dupont")
+                .password("password").build();
         return customer;
     }
 
@@ -84,9 +74,13 @@ public class OrderServiceImplTest {
         final List<Item> items=getItems();
 
         when(customerRepositoryMock.findById(customerId)).thenReturn(getCustomer());
-        when(itemRepositoryMock.findById(itemIds.get(0))).thenReturn(items.get(0));
+        /*when(itemRepositoryMock.findById(itemIds.get(0))).thenReturn(items.get(0));
         when(itemRepositoryMock.findById(itemIds.get(1))).thenReturn(items.get(1));
         when(itemRepositoryMock.findById(itemIds.get(2))).thenReturn(items.get(2));
+
+         */
+
+        when(itemRepositoryMock.findByIds(itemIds)).thenReturn(items);
 
         // En fait, il ne faut pas mocker la partie "save". Comme c'est un MockBean, il ne va pas faire d'insertion en base
 
@@ -98,7 +92,8 @@ public class OrderServiceImplTest {
         //permet de vérifier si
         verify(orderRepositoryMock, times(1)).save(any());
         verify(customerRepositoryMock, times(1)).findById(customerId);
-        verify(itemRepositoryMock, times(3)).findById(any());
+        //verify(itemRepositoryMock, times(3)).findById(any());
+        when(itemRepositoryMock.findByIds(itemIds)).thenReturn(items);
 
     }
 

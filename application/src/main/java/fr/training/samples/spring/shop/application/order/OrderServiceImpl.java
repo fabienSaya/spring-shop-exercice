@@ -5,6 +5,7 @@ import fr.training.samples.spring.shop.domain.customer.CustomerRepository;
 import fr.training.samples.spring.shop.domain.item.Item;
 import fr.training.samples.spring.shop.domain.item.ItemRepository;
 import fr.training.samples.spring.shop.domain.order.Order;
+import fr.training.samples.spring.shop.domain.order.OrderItem;
 import fr.training.samples.spring.shop.domain.order.OrderRepository;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     private final CustomerRepository customerRepository;
@@ -31,22 +33,15 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     @Override
     public Order addOrder(String customerId, List<String> itemIds) {
-        Customer customer= customerRepository.findById(customerId);
+        final Customer customer = customerRepository.findById(customerId);
+        final List<Item> items = itemRepository.findByIds(itemIds);
+        final List<OrderItem> orderItems = items.stream().map(OrderItem::new)
+                .collect(Collectors.toList());
 
-        Order order = new Order();
-        order.setCustomer(customer);
+        Order order = Order.builder()
+                .customer(customer)
+                .orderItems(orderItems).build();
 
-        /* perso, il faudrait mieux que le Total soit calculé dans addItem de order plutot
-        que faire un setTotal. On encapsule pas le calcul du coup
-         */
-
-        Integer total=0;
-        for (String itemId: itemIds) {
-            Item item= itemRepository.findById(itemId);
-            order.addItem(item);
-            total+=item.getPrice();
-        }
-        order.setTotal(total);
         orderRepository.save(order);
         return order;
     }

@@ -32,24 +32,24 @@ public class ItemRepositoryImplTest {
         Item item = itemRepository.findById(itemId);
         assertThat(item).isNotNull();
         assertThat(item.getId()).isEqualTo(itemId);
-        assertThat(item.getDescription()).isEqualTo("DESC1");
+        assertThat(item.getDescription()).isEqualTo("Bananas");
         assertThat(item.getPrice()).isEqualTo(10);
 
     }
 
     @Test
     public void save_new_item_should_succeed() {
-        final String itemID="idfab";
+        final String itemID = "idfab";
 
-        Item item=new Item();
-        item.setId(itemID);
-        item.setDescription("Item test");
-        item.setPrice(25);
+        Item item = Item.builder()
+                .id(itemID)
+                .description("Item test")
+                .price(25).build();
 
 
         itemRepository.save(item);
 
-        Item savedItem= itemRepository.findById(itemID);
+        Item savedItem = itemRepository.findById(itemID);
         assertThat(savedItem).isNotNull();
         assertThat(item).isEqualTo(savedItem);//on a surchargé equals de Item pour que ca marche bien
     }
@@ -98,7 +98,6 @@ public class ItemRepositoryImplTest {
     }
 
  */
-
 
 
 }
