@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import fr.training.samples.spring.shop.domain.common.exception.AlreadyExistingException;
@@ -25,6 +26,9 @@ public class CustomerServiceImplTest {
 
     @MockBean
     private CustomerRepository customerRepositoryMock;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
    @Test
     public void createCustomer_should_success_when_not_already_exist() {

@@ -6,6 +6,7 @@ import fr.training.samples.spring.shop.domain.item.Item;
 import fr.training.samples.spring.shop.domain.item.ItemRepository;
 import fr.training.samples.spring.shop.domain.order.Order;
 import fr.training.samples.spring.shop.domain.order.OrderRepository;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService{
         this.itemRepository = itemRepository;
     }
 
+    @Secured("ROLE_USER")
     @Transactional
     @Override
     public Order addOrder(String customerId, List<String> itemIds) {

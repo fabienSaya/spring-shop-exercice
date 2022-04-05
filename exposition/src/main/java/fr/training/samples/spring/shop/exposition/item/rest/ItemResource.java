@@ -2,6 +2,10 @@ package fr.training.samples.spring.shop.exposition.item.rest;
 
 import fr.training.samples.spring.shop.application.item.ItemService;
 import fr.training.samples.spring.shop.domain.item.Item;
+import fr.training.samples.spring.shop.exposition.common.ErrorModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -51,6 +55,11 @@ public class ItemResource {
 
     }
 
+    @ApiOperation(value = "This operation allow to add a new item", nickname = "addItem", notes = "Please give item infos")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Item was added"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found ", response = ErrorModel.class),
+            @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorModel.class) })
     @PostMapping(value = "/items", produces = { "application/json" }, consumes = { "application/json" })
     public ResponseEntity<URI> addItemUsingPost(@Valid @RequestBody final ItemLightDto itemDto) {
 
