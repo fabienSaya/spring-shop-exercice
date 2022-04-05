@@ -11,6 +11,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create-drop
+    mapping-resources:
+      - META-INF/common.orm.hbm.xml
+      - META-INF/customer.orm.hbm.xml
+    show-sql: true
+
   cache:
     jcache:
       config: classpath:cache/ehcache.xml
@@ -23,3 +28,4 @@ logging:
 # used to verify this hash if you have the secret key.
 jwt:
   secret: spring-shop
+

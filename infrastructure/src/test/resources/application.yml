@@ -2,9 +2,13 @@ spring:
   profiles:
     active: test
   jpa:
+    mapping-resources:
+      - META-INF/common.orm.hbm.xml
+      - META-INF/customer.orm.hbm.xml
     show-sql: true
     open-in-view: false
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
