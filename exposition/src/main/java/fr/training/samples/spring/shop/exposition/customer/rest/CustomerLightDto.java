@@ -1,67 +1,124 @@
 package fr.training.samples.spring.shop.exposition.customer.rest;
 
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 public class CustomerLightDto implements Serializable {
 
-	/**
-	 * serialVersionUID of type long
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * name of type String
-	 */
-	private String name;
+    private String name;
 
-	/**
-	 * password of type String
-	 */
-	private String password;
+    private String password;
 
-	/**
-	 *
-	 */
-	public CustomerLightDto() {
-		super();
-	}
+    private String email;
 
-	/**
-	 * @param name
-	 * @param password
-	 */
-	public CustomerLightDto(final String name, final String password) {
-		super();
-		this.name = name;
-		this.password = password;
-	}
+    private String street;
 
-	/**
-	 * @return
-	 */
-	public String getName() {
-		return name;
-	}
+    private String city;
 
-	/**
-	 * @return
-	 */
-	public String getPassword() {
-		return password;
-	}
+    private String country;
 
-	/**
-	 * @param name
-	 */
-	public void setName(final String name) {
-		this.name = name;
-	}
+    private String postalCode;
 
-	/**
-	 * @param password
-	 */
-	public void setPassword(final String password) {
-		this.password = password;
-	}
+    /**
+     * No-arg constructor for JavaBean tools
+     */
+    public CustomerLightDto() {
+
+    }
+
+    /**
+     * @param name
+     * @param password
+     */
+    public CustomerLightDto(final String name, final String password) {
+        super();
+        this.name = name;
+        this.password = password;
+    }
+
+    @ApiModelProperty(example = "John Doe", required = true, value = "Customer name")
+    @Size(min = 5)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    @ApiModelProperty(example = "password", required = true, value = "Customer password")
+    @Size(min = 5)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    @ApiModelProperty(example = "email", required = true, value = "Customer email")
+    @Email
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    @ApiModelProperty(example = "10 main street", required = true, value = "Customer street")
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(final String street) {
+        this.street = street;
+    }
+
+    @ApiModelProperty(example = "Las vegas", required = true, value = "Customer city")
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(final String city) {
+        this.city = city;
+    }
+
+    @ApiModelProperty(example = "Eldorado", required = true, value = "Customer country")
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(final String country) {
+        this.country = country;
+    }
+
+    @ApiModelProperty(example = "12345", required = true, value = "Customer postal code")
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(final String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("CustomerLightDto [name=").append(name) //
+                .append(", password=").append(password) //
+                .append(", email=").append(email) //
+                .append(", street=").append(street) //
+                .append(", city=").append(city) //
+                .append(", country=").append(country) //
+                .append(", postalCode=").append(postalCode) //
+                .append("]");
+        return builder.toString();
+    }
 
 }

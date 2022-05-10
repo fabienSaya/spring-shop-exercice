@@ -16,6 +16,9 @@ public class Customer extends AbstractBaseEntity {
 
     private Set<RoleTypeEnum> roles = new HashSet<>();
 
+    private EmailAdress email;
+    private PostalAddress address;
+
     public Customer() {
     }
 
@@ -33,12 +36,24 @@ public class Customer extends AbstractBaseEntity {
         return password;
     }
 
+    public void updatePassword(String newPassword) {
+        this.password=newPassword;
+    }
+
     public Set<RoleTypeEnum> getRoles() {
         return roles;
     }
 
     public void addRole(final RoleTypeEnum role) {
         roles.add(role);
+    }
+
+    public EmailAdress getEmail() {
+        return email;
+    }
+
+    public PostalAddress getAddress() {
+        return address;
     }
 
     @Override
@@ -60,6 +75,8 @@ public class Customer extends AbstractBaseEntity {
         name = builder.name;
         password = builder.password;
         roles = builder.roles;
+        email=builder.email;
+        address=builder.address;
     }
 
     /**
@@ -77,6 +94,9 @@ public class Customer extends AbstractBaseEntity {
         private String name;
         private String password;
         private Set<RoleTypeEnum> roles = new HashSet<>();
+
+        private EmailAdress email;
+        private PostalAddress address;
 
         public Builder id(final String id) {
             this.id = id;
@@ -97,6 +117,17 @@ public class Customer extends AbstractBaseEntity {
             roles.add(role);
             return this;
         }
+
+        public Builder email(EmailAdress email) {
+            this.email=email;
+            return this;
+        }
+
+        public Builder address(PostalAddress address) {
+            this.address=address;
+            return this;
+        }
+
 
         public Customer build() {
             Validate.notNull(name, "customer's name is required");

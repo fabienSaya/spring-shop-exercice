@@ -6,7 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import fr.training.samples.spring.shop.domain.customer.RoleTypeEnum;
+import fr.training.samples.spring.shop.domain.customer.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import fr.training.samples.spring.shop.domain.common.exception.AlreadyExistingException;
-import fr.training.samples.spring.shop.domain.customer.Customer;
-import fr.training.samples.spring.shop.domain.customer.CustomerRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {CustomerServiceImpl.class})
@@ -31,15 +29,21 @@ public class CustomerServiceImplTest {
     @MockBean
     private PasswordEncoder passwordEncoder;
 
+    private Customer getDefaultCustomer() {
+        return Customer.builder()
+                .name("name")
+                .password("password")
+                .addRole(RoleTypeEnum.ROLE_USER)
+                .email(EmailAdress.of("michel.dupont@gmail.com")) //
+                .address(new PostalAddress("10 main street", "Las Vegas", "Eldorado", "123456"))
+                .build();
+    }
+
     @Test
     public void createCustomer_should_success_when_not_already_exist() {
         // Given
-        /*final Customer customer = new Customer();
-        customer.setName("name");
-        customer.setPassword("password");*/
-
         when(passwordEncoder.encode("password")).thenReturn("password");
-        Customer customer = Customer.builder().name("name").password("password").addRole(RoleTypeEnum.ROLE_USER).build();
+        Customer customer = getDefaultCustomer();
 
         when(customerRepositoryMock.findByCustomerName("name")).thenReturn(null);
 
@@ -54,11 +58,7 @@ public class CustomerServiceImplTest {
     @Test
     public void createCustomer_should_fail_when_already_exist() {
         // Given
-        /*final Customer customer = new Customer();
-        customer.setName("name");
-        customer.setPassword("password");
-         */
-        Customer customer = Customer.builder().name("name").password("password").build();
+        Customer customer = getDefaultCustomer();
 
         when(customerRepositoryMock.findByCustomerName("name")).thenReturn(customer);
 
@@ -82,7 +82,7 @@ public class CustomerServiceImplTest {
         customer.setName("Michel Dupont");
         customer.setPassword("password");*/
 
-        Customer customer = Customer.builder().name("Michel Dupont").password("password").build();
+        Customer customer = getDefaultCustomer();
 
         when(customerRepositoryMock.findById(customerId)).thenReturn(customer);
 
@@ -91,15 +91,19 @@ public class CustomerServiceImplTest {
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getName()).isEqualTo("Michel Dupont");
+        assertThat(result.getName()).isEqualTo("name");
         assertThat(result.getPassword()).isEqualTo("password");
     }
-/*
-    @Test
+
+   /* @Test
     public void update_should_call_save_repository_1_time() {
         // Given
-        final Customer customer = new Customer();
-        customer.setName("Michel Dupont");
+        final Customer customer = Customer.builder() //
+                .name("Michel Dupont") //
+                .password(Password.of("password"))
+                .email(EmailAdress.of("michel.dupont@gmail.com")) //
+                .address(new PostalAddress("10 main street", "Las Vegas", "Eldorado", "123456"))
+                .build();
 
         // When
         final Customer result = customerService.create(customer);

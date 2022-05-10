@@ -29,12 +29,15 @@ public class CustomerServiceImpl implements CustomerService {
         if (customerWithSameName != null)
             throw new AlreadyExistingException("A customer with this name already exist");
 
+        //on encode le password
+        customer.updatePassword(passwordEncoder.encode(customer.getPassword()));
+
         //on fait une copie du customer en encodant le password
-        Customer customer1 = Customer.builder()
+        /*Customer customer1 = Customer.builder()
                 .id(customer.getId())
                 .name(customer.getName())
                 .password(passwordEncoder.encode(customer.getPassword()))
-                .addRole(RoleTypeEnum.ROLE_USER).build();
+                .addRole(RoleTypeEnum.ROLE_USER).build();*/
 
         // Encode given password
         //customer.setPassword(passwordEncoder.encode(customer.getPassword()));
@@ -42,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
         // New customer has user role by default
         //customer.addRole(RoleTypeEnum.ROLE_USER);
 
-        customerRepository.save(customer1);
+        customerRepository.save(customer);
         return customer;
 
     }

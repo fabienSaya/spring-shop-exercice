@@ -1,6 +1,9 @@
 package fr.training.samples.spring.shop.exposition.customer.rest;
 
 import fr.training.samples.spring.shop.domain.customer.Customer;
+import fr.training.samples.spring.shop.domain.customer.EmailAdress;
+import fr.training.samples.spring.shop.domain.customer.PostalAddress;
+import fr.training.samples.spring.shop.domain.customer.RoleTypeEnum;
 import fr.training.samples.spring.shop.exposition.common.AbstractMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +18,9 @@ public class CustomerMapper extends AbstractMapper<Customer,CustomerDto,Customer
 
     @Override
     public CustomerDto mapToDto(final Customer entity) {
+        if (entity == null) {
+            return null;
+        }
         final CustomerDto dto = new CustomerDto();
         dto.setCustomerID(entity.getId());
         dto.setName(entity.getName());
@@ -24,18 +30,24 @@ public class CustomerMapper extends AbstractMapper<Customer,CustomerDto,Customer
 
     @Override
     public Customer mapToEntity(final CustomerDto dto) {
-       /* final Customer customer = new Customer();
-        customer.setName(dto.getName());
-        customer.setPassword(dto.getPassword());
-        customer.setId(dto.getCustomerID());*/
-
-        return Customer.builder().id(dto.getCustomerID()).name(dto.getName()).password(dto.getPassword()).build();
+        return Customer.builder()
+                .id(dto.getCustomerID())
+                .name(dto.getName())
+                .password(dto.getPassword())
+                .build();
     }
 
 
     @Override
     public Customer mapLightDtoToEntity(CustomerLightDto dto) {
-        return Customer.builder().name(dto.getName()).password(dto.getPassword()).build();
+        return Customer.builder()
+                .name(dto.getName())
+                .password(dto.getPassword())
+                .addRole(RoleTypeEnum.ROLE_USER)//par default on donne un role user
+                .email(EmailAdress.of(dto.getEmail()))
+                .address(new PostalAddress(dto.getStreet(), dto.getCity(), dto.getCountry(), dto.getPostalCode()))
+                .build();
     }
+
 
 }
